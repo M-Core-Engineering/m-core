@@ -13,3 +13,6 @@
 [submodule "templates"]
 	path = templates
 	url = https://github.com/M-Core-Engineering/templates.git
+[submodule ".github"]
+	path = .github
+	url = https://github.com/M-Core-Engineering/.github.git
