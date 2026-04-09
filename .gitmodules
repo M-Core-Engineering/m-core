@@ -1,0 +1,15 @@
+[submodule "spec"]
+	path = spec
+	url = https://github.com/M-Core-Engineering/spec.git
+[submodule "engine"]
+	path = engine
+	url = https://github.com/M-Core-Engineering/engine.git
+[submodule "mobile"]
+	path = mobile
+	url = https://github.com/M-Core-Engineering/mobile.git
+[submodule "showcase"]
+	path = showcase
+	url = https://github.com/M-Core-Engineering/showcase.git
+[submodule "templates"]
+	path = templates
+	url = https://github.com/M-Core-Engineering/templates.git

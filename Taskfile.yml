@@ -1,0 +1,13 @@
+version: '3'
+
+includes:
+  spec:
+    taskfile: ./spec/Taskfile.yml
+    dir: ./spec
+
+tasks:
+  setup:
+    desc: "Initialise l'écosystème : Submodules et outils M-CORE"
+    cmds:
+      - git submodule update --init --recursive
+      - task: spec:setup
