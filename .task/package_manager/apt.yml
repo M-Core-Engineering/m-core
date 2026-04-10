@@ -1,0 +1,37 @@
+version: '3'
+
+
+tasks:
+  # --- INTERFACES PUBLICS ---
+
+  # -----------------------------------------------------------------------
+  install:
+    desc: "Installe un paquet (Usage: task pkg:install PKG=nom_du_paquet)"
+    requires: { vars: [PKG] }
+    cmds:
+      - task: _log
+        vars: { MSG: "[ALERTE] - Tentative d'installation de {{.PKG}} via {{.PKG_ENGINE}}." }
+      - sudo apt-get update && sudo apt-get install -y {{.PKG}}
+      - task: _log
+        vars: { MSG: "[SUCCESS] - {{.PKG}} installé via {{.PKG_ENGINE}}." }
+    status:
+      - sh: dpkg -l {{.PKG}} 2>/dev/null | grep -q '^ii'
+    on_error:
+      - task: _log
+        vars: { MSG: "[ECHEC] - Installation de {{.PKG}} via {{.PKG_ENGINE}} échouée." }
+
+
+  # # -----------------------------------------------------------------------
+  update:
+    desc: "Met a jour un paquet (Usage: task pkg:update PKG=nom_du_paquet)"
+    requires: { vars: [PKG] }
+    cmds:
+      - sudo apt-get install --only-upgrade -y {{.PKG}}
+
+
+  # # -----------------------------------------------------------------------
+  remove:
+    desc: "Supprime un paquet (Usage: task pkg:remove PKG=nom_du_paquet)"
+    requires: { vars: [PKG] }
+    cmds:
+      - sudo apt-get remove -y {{.PKG}}
