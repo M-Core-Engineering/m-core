@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  pkg:
+    desc: "Teste La detection de gestionnaire de paquets utiliser pour cette ecosysteme"
+    cmds:
+      - echo "Systeme d'exploitation detecter par Task -> {{OS}}"
+      # - echo "Gestionnaire de paquets selectionner -> {{.PKG_ENGINE}}"
+    silent: true

@@ -1,115 +1,55 @@
 version: '3'
 
-# Definition des variables
-vars:
-  BIN_DIR: bin
-  DIST_DIR: dist
-  LOG_FILE: "{{.ROOT_DIR}}/task.log"
-  PKG_ENGINE:
-    sh: |
-      if [ "${OS:-}" = "Windows_NT" ]; then
-        if command -v scoop >/dev/null 2>&1; then
-          echo "scoop"
-        elif command -v winget >/dev/null 2>&1; then
-          echo "winget"
-        else
-          echo "unsupported"
-        fi
-      elif [ -n "$TERMUX_VERSION" ]; then
-        echo "termux"
-      elif command -v brew >/dev/null 2>&1 && [ -d "/opt/homebrew" ] || [ -d "/usr/local/bin/brew" ]; then
-        echo "brew"
-      elif command -v apt-get >/dev/null 2>&1 && [ -f /etc/debian_version ]; then
-        echo "apt"
-      elif command -v dnf >/dev/null 2>&1; then
-        echo "dnf"
-      elif command -v pacman >/dev/null 2>&1; then
-        echo "pacman"
-      else
-        echo "unsupported"
-      fi
-
-
-# Inclusion des tâches des sous-modules
+# Importation des modules de gestion de paquets
 includes:
-  pkg:
-    taskfile: ./.task/package_manager/{{.PKG_ENGINE}}.yml
-    optional: false
-    # vars:
-    #   DEBUG: "{{.DEBUG}}"
+  pm: .task/package_manager/main.task.yml
+  pm:scoop: .task/package_manager/scoop.task.yml
+  # pm-termux: .task/package_manager/termux.task.yml
 
-  # engine: ./engine/Taskfile.yml
-  # spec: ./spec/Taskfile.yml
-  # mobile: ./mobile/Taskfile.yml
+vars:
+  # Stack logicielle minimale pour le MVP M-CORE
+  CORE_TOOLS: go-task zola typst vale gitleaks markdownlint-cli2
 
-
-# Definition des commandes
 tasks:
-  # -------------------------------------------------------------------------------
-  default:
-    cmds:
-      - task --list
-
-  # -------------------------------------------------------------------------------
   setup:
-    desc: "Initialise l'environnement complet (Submodules + Dépendances)"
+    desc: "Initialisation complète de l'environnement M-CORE"
     cmds:
+      - task: install-deps
       - git submodule update --init --recursive
-      # - task: setup:tools
-      - echo "Système M-CORE prêt."
+      - echo "Écosystème M-CORE initialisé avec succès."
 
-  # -------------------------------------------------------------------------------
-  _check-pkg:
+  install-deps:
+    desc: "Installation automatisée des outils de la stack"
     cmds:
-      - |
-        if [ "{{.PKG_ENGINE}}" = "unsupported" ]; then
-          echo "❌ Le gestionnaire d'installation '{{.PKG_ENGINE}}' n'est pas supporté par notre écosystème." >&2
-          exit 1
-        fi
+      - for: { var: CORE_TOOLS }
+        task: pm:install
+        vars: { PKG: '{{.ITEM}}' }
 
-  _log:
-    internal: true
-    vars:
-      TIMESTAMP: { sh: "date '+%Y-%m-%d %H:%M:%S'" }
+  # --- Gestion des Dépôts Modulaires ---
+
+  build:engine:
+    desc: "Compile le noyau de rendu (Engine)"
+    dir: engine
     cmds:
-      - |
-        {{if eq OS "windows"}}
-        powershell -Command "Add-Content -Path {{.LOG_FILE}} -Value '{{TIMESTAMP}} [INFO] {{.MSG}}'"
-        {{else}}
-        echo "{{.TIMESTAMP}} [INFO] {{.MSG}}" >> {{.LOG_FILE}}
-        {{end}}
-      - echo "{{.MSG}}"
+      - go build -v ./...
 
+  check:spec:
+    desc: "Valide la conformité des standards (Spec)"
+    dir: spec
+    cmds:
+      - vale .
+      - markdownlint-cli2 "**/*.md"
 
+  serve:showcase:
+    desc: "Lance la prévisualisation de la vitrine (Showcase)"
+    dir: showcase
+    cmds:
+      - zola serve
 
+  # --- Utilitaires ---
 
-
-  # setup:tools:
-  #   internal: true
-  #   desc: "Installe les outils via Scoop ou Termux selon l'OS"
-  #   cmds:
-  #     # Windows (Scoop)
-  #     - cmd: scoop install rustup-msvc go zola typst vale
-  #       platforms: [windows]
-  #     # Android (Termux)
-  #     - cmd: pkg install rust binutils setup-repo zola typst vale
-  #       platforms: [linux]
-
-  # build:
-  #   desc: "Lance le build complet (Engine -> Spec -> Templates)"
-  #   cmds:
-  #     - task: engine:build
-  #     - task: spec:validate
-  #     - task: render:all
-
-  # render:all:
-  #   desc: "Génère les sorties Web et PDF"
-  #   cmds:
-  #     - zola build --output-dir {{.DIST_DIR}}/web
-  #     - typst compile templates/main.typ {{.DIST_DIR}}/pdf/output.pdf
-
-  # lint:
-  #   desc: "Vérifie la conformité de tout l'écosystème"
-  #   cmds:
-  #     - task: spec:lint-markdown
-  #     - task: engine:test
+  clean:
+    desc: "Nettoie les artefacts de build"
+    cmds:
+      - rm -rf showcase/public
+      - rm -rf engine/bin

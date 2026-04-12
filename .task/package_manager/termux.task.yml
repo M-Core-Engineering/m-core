@@ -1,0 +1,14 @@
+version: '3'
+
+tasks:
+  install:
+    internal: true
+    cmds:
+      - pkg install {{.PKG}} -y
+    status:
+      - which {{.PKG}}
+
+  update:
+    internal: true
+    cmds:
+      - pkg upgrade {{.PKG}} -y

@@ -1,6 +1,6 @@
 # 🌌 M-CORE (Mobile-first Continuity & Offline Rendering Engine)
 
-**Infrastructure de publication technique résiliente : L'excellence du Docs-as-Code, du mobile au Desktop.** *Idéale pour la Production, la Validation, le Stockage et la Diffusion d'informations en conditions extrêmes.*
+**Infrastructure de publication technique résiliente : L'excellence du Docs-as-Code, du mobile au Desktop.** *Garantir la continuité de production en environnements à ressources contraintes (Énergie/Connectivité).*
 
 ![M-CORE Status](https://img.shields.io/badge/Status-Industrial_Beta-blue)
 ![License](https://img.shields.io/badge/License-Apache_2.0-orange)
@@ -10,89 +10,116 @@
 
 ## 📌 Vision Industrielle
 
-**M-CORE** est une infrastructure hybride conçue pour garantir la continuité de production technique en environnements dégradés. Il fournit un écosystème **Offline-First** capable de briser la dépendance aux infrastructures fixes.
+**M-CORE** est une infrastructure hybride conçue pour briser la dépendance aux infrastructures fixes. Dans un contexte de volatilité énergétique et réseau, M-CORE transforme n'importe quel terminal — mobile ou station de travail — en une **unité de production autonome** capable de générer des actifs numériques certifiés (Web/PDF) aux standards d'entreprise.
 
-L'objectif est de permettre aux ingénieurs et étudiants de maintenir un flux de production de haute qualité (**Docs-as-Code**) malgré l'instabilité énergétique (ENEO), les ruptures de connectivité ou les contraintes de mobilité. M-CORE unifie les flux de travail entre terminaux mobiles (Android/iOS) et stations de travail (Windows/Linux/macOS), transformant le Markdown brut en livrables certifiés (Web/PDF) sans accès Internet requis.
+### Pourquoi M-CORE ?
 
-## 🏗️ Architecture de l'Écosystème
+* **Résilience (Offline-First) :** Zéro dépendance au Cloud pour le cycle de build.
+* **Continuité Mobile :** Unification du workflow entre Android (Termux) et Desktop.
+* **Ingénierie Frugale :** Optimisation radicale pour ARM64 afin de maximiser l'autonomie sur batterie.
 
-Le projet est orchestré selon un modèle de **Meta-Sourcing** via `git submodules`, garantissant une gestion granulaire des droits et une maintenance modulaire.
+-----
 
-| Couche | Composant | Stack | Rôle Stratégique |
-| :--- | :--- | :--- | :--- |
-| **Orchestration** | [`m-core`](https://github.com/M-Core-Engineering/m-core.git) | Go-Task / CI-CD | Automatisation multi-OS et pipelines GitHub Actions. |
-| **Kernel** | [`engine`](https://github.com/M-Core-Engineering/engine.git) | Rust / Go | Moteur propriétaire de transformation haute performance. |
-| **Governance** | [`spec`](https://github.com/M-Core-Engineering/spec.git) | Vale / YAML | Standards de validation et conformité sémantique métier. |
-| **Design** | [`templates`](https://github.com/M-Core-Engineering/templates.git) | Typst / Zola | Bibliothèque de composants UI et layouts industriels. |
-| **Distribution** | [`showcase`](https://github.com/M-Core-Engineering/showcase.git) | HTMX / Alpine | Interface de diffusion Web optimisée pour l'Edge Computing. |
-| **Bridge** | [`mobile`](https://github.com/M-Core-Engineering/mobile.git) | Tauri / Rust | Client natif Android/iOS et accès au système de fichiers. |
+## 🏗️ Architecture de l'Écosystème (IaaS Portable)
 
-## 🚀 Le Workflow "M-Flow" (Cross-Platform)
+Le diagramme suivant illustre la couche d'abstraction permettant la continuité du travail sans friction entre les supports.
 
-M-CORE agit comme une **IaaS** portable synchronisant la rigueur du Desktop avec la flexibilité du Mobile :
+```mermaid
+graph TD
+    subgraph "Couche d'Édition (Multi-Support)"
+        A[Mobile: Obsidian/Termux] --> B{M-CORE Workspace}
+        C[Desktop: VSCode/Neovim] --> B
+    end
 
-1. **Authoring** : Rédaction fluide sur IDE (VS Code, Obsidian) ou terminaux mobiles (Termux).
-2. **Linting & Policy** : Validation automatique immédiate selon les standards `spec`.
-3. **Local Build** : Génération instantanée des artefacts (HTML5/PDF) en local (100% Offline).
-4. **Cloud Sync & Deploy** : Dès reconnexion, déploiement sécurisé vers Cloudflare Pages via GitHub Actions.
+    subgraph "Core Engine (Le Noyau)"
+        B --> D[Orchestrateur Go-Task]
+        D --> E[Linter & Validator: Vale/Markdownlint]
+        E --> F[Moteur de Rendu: Zola/Typst]
+    end
 
-## 🛠️ Démarrage Rapide
+    subgraph "Couche de Diffusion (Edge)"
+        F --> G[Build Artifacts: Web/PDF]
+        G --> H[Cloudflare Pages / Local Sync]
+    end
 
-L'initialisation est automatisée via **Go-Task** pour garantir la cohérence de l'environnement sur tous les systèmes d'exploitation.
+    style D fill:#00ADD8,stroke:#333,stroke-width:2px
+    style F fill:#f96,stroke:#333,stroke-width:2px
+```
 
-### 1\. Pré-requis (Gestionnaires de paquets)
+-----
 
-* **Windows** : [Scoop](https://scoop.sh/) (Recommandé) ou Winget.
-* **Android** : [Termux](https://termux.dev/).
-* **Linux/macOS** : Apt, Brew ou Nix.
+## 🛡️ Gouvernance & Standards
 
-### 2\. Clonage et Initialisation
+Le respect des cycles de vie et des normes de qualité est central à M-CORE.
+Consultez notre [Guide de Gouvernance Digitale](https://github.com/M-Core-Engineering/.github/blob/main/README.md) pour comprendre nos protocoles SDLC.
+
+## 🛠️ Spécifications Techniques & Gouvernance
+
+### 1\. Standards de Qualité (M-CORE STD)
+
+Tout actif produit au sein de cet écosystème doit franchir les barrières de validation suivantes :
+
+| Domaine | Vecteur de Contrôle | Standard Appliqué |
+| :--* | :--* | :--* |
+| **Sémantique** | `Vale` | Ton professionnel et pédagogique strict. |
+| **Syntaxe** | `markdownlint-cli2` | Conformité `M-Spec` (YAML Frontmatter). |
+| **Rendu PDF** | `Typst` | Précision typographique industrielle. |
+| **Orchestration** | `Go-Task` | Syntaxe POSIX pure via interpréteur `Gosh`. |
+
+-----
+
+### 2\. Sécurité & Intégrité
+
+* **Secret Management :** Scan systématique via `Gitleaks` pour prévenir toute fuite de credentials en mobilité.
+* **Auditabilité :** Chaque modification est versionnée sous Git, assurant une traçabilité totale (SDLC).
+
+-----
+
+## 🚀 Guide d'Installation Rapide
+
+M-CORE utilise l'abstraction de tâches pour garantir la reproductibilité des builds en tout lieu (Windows, Linux, Android).
 
 ```bash
-# Clonage récursif incluant tous les modules
+# 1. Clonage récursif de l'infrastructure complète
 git clone --recursive https://github.com/M-Core-Engineering/m-core.git
-cd m-core
 
-# Initialisation de l'environnement (Nécessite Go-Task)
+# 2. Initialisation intelligente de l'environnement
+# Détecte automatiquement l'hôte (Scoop, Apt, Brew ou Termux)
+task setup:init
+
+# 3. Installation de tout les outils necessaire a l'environnement (celles manquante)
 task setup
 
-# Vérification de l'intégrité
-task lint
+# 3. Validation et Rendu local
+task build:all
 ```
 
 > **Note :** Si vous avez déjà cloné le dépôt sans l'option `--recursive`, exécutez :
 > `git submodule update --init --recursive`
 
-## 🛠️ Déploiement & Industrialisation
+-----
 
-M-CORE utilise l'abstraction de tâches pour garantir la reproductibilité des builds en tout lieu.
+## ⚖️ Philosophie & Retour sur Investissement (ROI)
 
-```bash
-# Cycle de validation et rendu local
-task build:local
-
-# Préparation au déploiement (Vérification CI/CD)
-task deploy:check
-```
-
-## ⚖️ Philosophie & Principes d'Ingénierie (ROI)
-
-* **Indépendance Infrastructurelle** : Réduction drastique des temps d'arrêt liés aux pannes réseau ou électriques.
-* **Souveraineté des Données** : Versionnage intégral sous Git, assurant la traçabilité et l'auditabilité.
-* **Frugal Engineering** : Priorité aux outils à binaire unique (Rust/Go) pour minimiser l'empreinte thermique et mémoire.
-* **Qualité par Design** : Chaque document est traité comme un actif logiciel (versionné, testé, validé).
-* **Indépendance Système** : Expérience utilisateur identique sur smartphone et station de travail.
+* **Souveraineté des Données :** L'intégralité du savoir est stockée en local, synchronisée uniquement par choix.
+* **Efficacité Temporelle :** Réduction du "bruit" et de la distraction en isolant le processus de production.
+* **Professionnalisme Accru :** Production de livrables dont la qualité formelle égale celle des grandes maisons d'édition.
 
 -----
 
 ## 📊 Roadmap du MVP
 
 * [x] Définition des standards d'édition (syntaxe **M-Spec**).
-* [ ] Finalisation du moteur de rendu binaire multiplateforme.
-* [ ] Automatisation complète du déploiement Edge.
-* [ ] Interface de gestion de projet Mobile-First (Tauri).
+* [ ] **Phase 1 :** Finalisation de l'orchestrateur multi-OS (Go-Task).
+* [ ] **Phase 2 :** Déploiement automatisé sur la couche Edge (Cloudflare).
+* [ ] **Phase 3 :** Client natif haute performance (Tauri/Rust).
 
 -----
 
 **Mainteneur Principal** : [Nguetsa Lorein Du Perron](https://github.com/lorein-duperron)
+**Organisation** : [M-CORE Engineering](https://github.com/M-Core-Engineering)
 **Licence** : [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) — *Garantissant la liberté d'usage et la protection des contributions.*
+
+> *"Passer de l'artisanat à la rigueur : La donnée devient un actif, le mobile devient une usine."*
+
+-----

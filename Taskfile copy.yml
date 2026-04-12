@@ -1,0 +1,140 @@
+version: '3'
+set: [pipefail]
+shell:
+  windows: powershell
+  unix: sh
+
+# ==================================================================================================
+# Variables statiques
+# ==================================================================================================
+vars:
+  PKG_DIR: "./.task/package_manager"
+  MOD_DIR: "./.task/module"
+  TEST_DIR: "./.task/test"
+  PKG_ENGINE_FILE: "./.task/package_manager/pkg_current_engine.yml"
+  TEST_ENGINE_FILE: "./.task/test/test_current_engine.yml"
+
+# ==================================================================================================
+# Inclusion des tâches des sous-modules
+# ==================================================================================================
+includes:
+  # --- MODULE DE GESTION DE CYCLE DE VIE DE PACKAGE (ABSTRACTION LAYER)---
+  pkg:
+    taskfile: "{{.PKG_ENGINE_FILE}}"
+    optional: true
+
+  # --- MODULE DES TESTS (QUALITY & CI - ABSTRACTION LAYER REGISTER)
+  test:
+    taskfile: "{{.TEST_ENGINE_FILE}}"
+    optional: true
+
+  # --- MODULES D'ACTIVITE METIERS ---
+  git:
+    taskfile: "{{.MOD_DIR}}/git-task.yml"
+    internal: true
+
+  worker:
+    taskfile: "{{.MOD_DIR}}/worker-task.yml"
+    internal: false
+
+# ==================================================================================================
+# Definition des commandes
+# ==================================================================================================
+tasks:
+  # -------------------------------------------------------------------------------
+  default:
+    cmds:
+      - task --list
+
+  # -------------------------------------------------------------------------------
+  init:
+    desc: "Initialise l'environnement de developpement (Detection OS & Modules)"
+    cmds:
+      - task worker:autoload-engines
+      - echo "Environnement pret (Moteur detecter -> {{.PKG_ENGINE}})"
+    silent: true
+
+  # -------------------------------------------------------------------------------
+
+
+
+#   # -------------------------------------------------------------------------------
+#   test:
+#     desc: "Lance la suite complete des tests (Pipeline CI Local)"
+#     deps:
+#       - task: git-submodule-init-sync
+#       - task: worker:autoload-pkg-engine
+#     cmds:
+#       - task: tests:pkg
+
+
+#   # -------------------------------------------------------------------------------
+#   setup:
+#     deps:
+#       - task: git-submodule-init-sync
+#     desc: "Initialise l'environnement complet (Submodules + Dépendances)"
+#     vars:
+#       PKG_ENGINE_NAME:
+#         - task: worker:get_os_pkg_engine
+#     cmds:
+#     # "./package_manager/{{.PKG_NAME}}.yml" "./package_manager/.{{.DESTINATION}}.yml" -Force
+#       - git submodule update --init --recursive
+#       - task: worker:autoload-pkg-engine
+#       # - task: setup:tools
+#       - echo "Système M-CORE prêt."
+
+#   # -------------------------------------------------------------------------------
+#   _check-pkg:
+#     cmds:
+#       - |
+#         if [ "{{.PKG_ENGINE}}" = "unsupported" ]; then
+#           echo "❌ Le gestionnaire d'installation '{{.PKG_ENGINE}}' n'est pas supporté par notre écosystème." >&2
+#           exit 1
+#         fi
+
+#   _log:
+#     internal: true
+#     vars:
+#       TIMESTAMP: { sh: "date '+%Y-%m-%d %H:%M:%S'" }
+#     cmds:
+#       - |
+#         {{if eq OS "windows"}}
+#         powershell -Command "Add-Content -Path {{.LOG_FILE}} -Value '{{TIMESTAMP}} [INFO] {{.MSG}}'"
+#         {{else}}
+#         echo "{{.TIMESTAMP}} [INFO] {{.MSG}}" >> {{.LOG_FILE}}
+#         {{end}}
+#       - echo "{{.MSG}}"
+
+
+
+
+
+  # setup:tools:
+  #   internal: true
+  #   desc: "Installe les outils via Scoop ou Termux selon l'OS"
+  #   cmds:
+  #     # Windows (Scoop)
+  #     - cmd: scoop install rustup-msvc go zola typst vale
+  #       platforms: [windows]
+  #     # Android (Termux)
+  #     - cmd: pkg install rust binutils setup-repo zola typst vale
+  #       platforms: [linux]
+
+  # build:
+  #   desc: "Lance le build complet (Engine -> Spec -> Templates)"
+  #   cmds:
+  #     - task: engine:build
+  #     - task: spec:validate
+  #     - task: render:all
+
+  # render:all:
+  #   desc: "Génère les sorties Web et PDF"
+  #   cmds:
+  #     - zola build --output-dir {{.DIST_DIR}}/web
+  #     - typst compile templates/main.typ {{.DIST_DIR}}/pdf/output.pdf
+
+  # lint:
+  #   desc: "Vérifie la conformité de tout l'écosystème"
+  #   cmds:
+  #     - task: spec:lint-markdown
+  #     - task: engine:test
