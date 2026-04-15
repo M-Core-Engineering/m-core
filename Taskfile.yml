@@ -1,55 +1,14 @@
+# yaml-language-server: $schema=https://taskfile.dev
 version: '3'
 
-# Importation des modules de gestion de paquets
-includes:
-  pm: .task/package_manager/main.task.yml
-  pm:scoop: .task/package_manager/scoop.task.yml
-  # pm-termux: .task/package_manager/termux.task.yml
+dotenv: ['.env']
 
-vars:
-  # Stack logicielle minimale pour le MVP M-CORE
-  CORE_TOOLS: go-task zola typst vale gitleaks markdownlint-cli2
+includes:
+  common: .task/common.yml
 
 tasks:
-  setup:
-    desc: "Initialisation complète de l'environnement M-CORE"
+  init:
+    desc: "Initialisation complète de l'espace de travail"
     cmds:
-      - task: install-deps
       - git submodule update --init --recursive
-      - echo "Écosystème M-CORE initialisé avec succès."
-
-  install-deps:
-    desc: "Installation automatisée des outils de la stack"
-    cmds:
-      - for: { var: CORE_TOOLS }
-        task: pm:install
-        vars: { PKG: '{{.ITEM}}' }
-
-  # --- Gestion des Dépôts Modulaires ---
-
-  build:engine:
-    desc: "Compile le noyau de rendu (Engine)"
-    dir: engine
-    cmds:
-      - go build -v ./...
-
-  check:spec:
-    desc: "Valide la conformité des standards (Spec)"
-    dir: spec
-    cmds:
-      - vale .
-      - markdownlint-cli2 "**/*.md"
-
-  serve:showcase:
-    desc: "Lance la prévisualisation de la vitrine (Showcase)"
-    dir: showcase
-    cmds:
-      - zola serve
-
-  # --- Utilitaires ---
-
-  clean:
-    desc: "Nettoie les artefacts de build"
-    cmds:
-      - rm -rf showcase/public
-      - rm -rf engine/bin
+      - echo "Environnement prêt."

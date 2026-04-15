@@ -28,7 +28,7 @@ Le diagramme suivant illustre la couche d'abstraction permettant la continuité 
 graph TD
     subgraph "Couche d'Édition (Multi-Support)"
         A[Mobile: Obsidian/Termux] --> B{M-CORE Workspace}
-        C[Desktop: VSCode/Neovim] --> B
+        C[Desktop: VSCode/Obsidian/Neovim] --> B
     end
 
     subgraph "Core Engine (Le Noyau)"
@@ -60,7 +60,7 @@ Consultez notre [Guide de Gouvernance Digitale](https://github.com/M-Core-Engine
 Tout actif produit au sein de cet écosystème doit franchir les barrières de validation suivantes :
 
 | Domaine | Vecteur de Contrôle | Standard Appliqué |
-| :--* | :--* | :--* |
+| :--- | :--- | :--- |
 | **Sémantique** | `Vale` | Ton professionnel et pédagogique strict. |
 | **Syntaxe** | `markdownlint-cli2` | Conformité `M-Spec` (YAML Frontmatter). |
 | **Rendu PDF** | `Typst` | Précision typographique industrielle. |
@@ -77,25 +77,25 @@ Tout actif produit au sein de cet écosystème doit franchir les barrières de v
 
 ## 🚀 Guide d'Installation Rapide
 
-M-CORE utilise l'abstraction de tâches pour garantir la reproductibilité des builds en tout lieu (Windows, Linux, Android).
+M-CORE utilise l'abstraction de tâches pour garantir la reproductibilité des builds en tout lieu (Windows, Linux, Android). Pour pouvoir prendre en main votre ecosysteme M-core, vous devez executer dans l'ordre les 3 commandes presenter a la suite.
+
+### a. Clonage de l'infrastructure complète**
 
 ```bash
-# 1. Clonage récursif de l'infrastructure complète
 git clone --recursive https://github.com/M-Core-Engineering/m-core.git
-
-# 2. Initialisation intelligente de l'environnement
-# Détecte automatiquement l'hôte (Scoop, Apt, Brew ou Termux)
-task setup:init
-
-# 3. Installation de tout les outils necessaire a l'environnement (celles manquante)
-task setup
-
-# 3. Validation et Rendu local
-task build:all
 ```
 
-> **Note :** Si vous avez déjà cloné le dépôt sans l'option `--recursive`, exécutez :
-> `git submodule update --init --recursive`
+### b. Initialisation de l'environnement local
+
+```bash
+task init
+```
+
+### c. Installation des outils necessaire a la bonne marche de l'ecosysteme
+
+```bash
+task setup
+```
 
 -----
 
@@ -117,9 +117,9 @@ task build:all
 -----
 
 **Mainteneur Principal** : [Nguetsa Lorein Du Perron](https://github.com/lorein-duperron)
+
 **Organisation** : [M-CORE Engineering](https://github.com/M-Core-Engineering)
+
 **Licence** : [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) — *Garantissant la liberté d'usage et la protection des contributions.*
 
 > *"Passer de l'artisanat à la rigueur : La donnée devient un actif, le mobile devient une usine."*
-
------

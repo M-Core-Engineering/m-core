@@ -1,9 +1,0 @@
-version: '3'
-
-tasks:
-
-  # -----------------------------------------------------------------------------------------------------------
-  git-submodule-init-sync:
-    desc: "Find the package manager to use in OS detected "
-    cmds:
-      - git submodule update --init --recursive
