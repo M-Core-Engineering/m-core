@@ -16,3 +16,9 @@
 [submodule ".github"]
 	path = .github
 	url = https://github.com/M-Core-Engineering/.github.git
+[submodule ".task"]
+	path = .task
+	url = https://github.com/M-Core-Engineering/.task.git
+[submodule "doc"]
+	path = doc
+	url = https://github.com/M-Core-Engineering/doc.git

@@ -1,13 +1,14 @@
+# yaml-language-server: $schema=https://taskfile.dev
 version: '3'
 
+dotenv: ['.env']
+
 includes:
-  spec:
-    taskfile: ./spec/Taskfile.yml
-    dir: ./spec
+  common: .task/common.yml
 
 tasks:
-  setup:
-    desc: "Initialise l'écosystème : Submodules et outils M-CORE"
+  init:
+    desc: "Initialisation complète de l'espace de travail"
     cmds:
       - git submodule update --init --recursive
-      - task: spec:setup
+      - echo "Environnement prêt."
