@@ -1,12 +1,30 @@
 # 🌌 M-CORE (Mobile-first Continuity & Offline Rendering Engine)
 
-**Infrastructure de publication technique résiliente : L'excellence du Docs-as-Code, du mobile au Desktop.** *Garantir la continuité de production en environnements à ressources contraintes (Énergie/Connectivité).*
+**Infrastructure de publication technique résiliente : L'excellence du Docs-as-Code, du mobile au Desktop.**  
+*Garantir la continuité de production en environnements à ressources contraintes (Énergie/Connectivité).*
 
-![M-CORE Status](https://img.shields.io/badge/Status-Industrial_Beta-blue)
-![License](https://img.shields.io/badge/License-Apache_2.0-orange)
-![Arch](https://img.shields.io/badge/Arch-ARM64_%7C_x86_64-success)
+![Build Status](https://shields.io)![License](https://shields.io)![Arch](https://shields.io)![Platform](https://shields.io)
 
------
+---
+
+## 📖 Sommaire
+
+- [🌌 M-CORE (Mobile-first Continuity \& Offline Rendering Engine)](#-m-core-mobile-first-continuity--offline-rendering-engine)
+  - [📖 Sommaire](#-sommaire)
+  - [📌 Vision Industrielle](#-vision-industrielle)
+    - [Pourquoi M-CORE ?](#pourquoi-m-core-)
+  - [🏗️ Architecture \& Anatomie](#️-architecture--anatomie)
+    - [1. Workflow Global (IaaS Portable)](#1-workflow-global-iaas-portable)
+  - [📦 Anatomie de l'Écosystème](#-anatomie-de-lécosystème)
+  - [💻 Matrice de Compatibilité](#-matrice-de-compatibilité)
+  - [🛡️ Standards de Qualité (M-CORE STD)](#️-standards-de-qualité-m-core-std)
+  - [🚀 Guide d'Installation Rapide](#-guide-dinstallation-rapide)
+    - [1. Prérequis](#1-prérequis)
+    - [2. Procédure de déploiement](#2-procédure-de-déploiement)
+      - [a. Clonage de l'infrastructure complète](#a-clonage-de-linfrastructure-complète)
+  - [⚖️ Philosophie \& ROI](#️-philosophie--roi)
+
+---
 
 ## 📌 Vision Industrielle
 
@@ -18,11 +36,11 @@
 * **Continuité Mobile :** Unification du workflow entre Android (Termux) et Desktop.
 * **Ingénierie Frugale :** Optimisation radicale pour ARM64 afin de maximiser l'autonomie sur batterie.
 
------
+---
 
-## 🏗️ Architecture de l'Écosystème (IaaS Portable)
+## 🏗️ Architecture & Anatomie
 
-Le diagramme suivant illustre la couche d'abstraction permettant la continuité du travail sans friction entre les supports.
+### 1. Workflow Global (IaaS Portable)
 
 ```mermaid
 graph TD
@@ -46,80 +64,74 @@ graph TD
     style F fill:#f96,stroke:#333,stroke-width:2px
 ```
 
------
+## 📦 Anatomie de l'Écosystème
 
-## 🛡️ Gouvernance & Standards
+Le projet est structuré en modules indépendants pour garantir une maintenance granulaire et une scalabilité optimale :
 
-Le respect des cycles de vie et des normes de qualité est central à M-CORE.
-Consultez notre [Guide de Gouvernance Digitale](https://github.com/M-Core-Engineering/.github/blob/main/README.md) pour comprendre nos protocoles SDLC.
+* [m-core](https://github.com/orgs/M-Core-Engineering/m-core) : Dépôt "Umbrella" gérant l'orchestration et l'unification des modules via **`Git Submodules`**.
+* [.github](https://github.com/orgs/zM-Core-Engineering/.github) : Socle de gouvernance (Templates d'issues, PR, et profils d'organisation).
+* [.task](https://github.com/orgs/M-Core-Engineering/.task) : Bibliothèque centrale de scripts d'automatisation (**Taskfiles**) partagée entre tous les services.
+* [spec](https://github.com/orgs/M-Core-Engineering/spec) : centre de definition des contrats et normes de validation des schemas et configuration, assurant la standardisation des procedes mises en place dans l'ecosysteme.
 
-## 🛠️ Spécifications Techniques & Gouvernance
+> [!Note]
+> M-CORE intègre également des modules privés pour les déploiements industriels spécifiques (Mobile App, Showcase).
 
-### 1\. Standards de Qualité (M-CORE STD)
+---
 
-Tout actif produit au sein de cet écosystème doit franchir les barrières de validation suivantes :
+## 💻 Matrice de Compatibilité
+
+| OS | Shell Interne | Architecture | Statut |
+| --- | --- | --- | --- |
+| **Android (Termux)** | gosh (POSIX) | ARM64 | ✅ Supporté |
+| **Windows 10/11** | PowerShell/CMD | x86_64 | ✅ Supporté |
+| **Linux (Debian/Arch)** | Bash/Zsh | ARM64 / x86_64 | ✅ Supporté |
+| **macOS** | Zsh | Apple Silicon | ✅ Supporté |
+
+---
+
+## 🛡️ Standards de Qualité (M-CORE STD)
 
 | Domaine | Vecteur de Contrôle | Standard Appliqué |
-| :--- | :--- | :--- |
+| --- | --- | --- |
 | **Sémantique** | `Vale` | Ton professionnel et pédagogique strict. |
-| **Syntaxe** | `markdownlint-cli2` | Conformité `M-Spec` (YAML Frontmatter). |
+| **Syntaxe** | `markdownlint` | Conformité M-Spec (YAML Frontmatter). |
 | **Rendu PDF** | `Typst` | Précision typographique industrielle. |
-| **Orchestration** | `Go-Task` | Syntaxe POSIX pure via interpréteur `Gosh`. |
+| **Orchestration** | `Go-Task` | Syntaxe POSIX pure via interpréteur Gosh. |
 
------
-
-### 2\. Sécurité & Intégrité
-
-* **Secret Management :** Scan systématique via `Gitleaks` pour prévenir toute fuite de credentials en mobilité.
-* **Auditabilité :** Chaque modification est versionnée sous Git, assurant une traçabilité totale (SDLC).
-
------
+---
 
 ## 🚀 Guide d'Installation Rapide
 
-M-CORE utilise l'abstraction de tâches pour garantir la reproductibilité des builds en tout lieu (Windows, Linux, Android). Pour pouvoir prendre en main votre ecosysteme M-core, vous devez executer dans l'ordre les 3 commandes presenter a la suite.
+### 1. Prérequis
 
-### a. Clonage de l'infrastructure complète**
+Avant de commencer, assurez-vous d'avoir installé :
+
+* Git (2.30+)
+* Go-Task (3.30+)
+
+### 2. Procédure de déploiement
+
+#### a. Clonage de l'infrastructure complète
 
 ```bash
-git clone --recursive https://github.com/M-Core-Engineering/m-core.git
-```
-
-### b. Initialisation de l'environnement local
-
-```bash
+git clone --recursive https://github.com/orgs/M-Core-Engineering/m-core
+cd m-core
+# b. Initialisation de l'environnement (Submodules & .env)
 task init
-```
-
-### c. Installation des outils necessaire a la bonne marche de l'ecosysteme
-
-```bash
+# c. Installation automatique des dépendances (Go, Vale, Typst)
 task setup
 ```
 
------
+---
 
-## ⚖️ Philosophie & Retour sur Investissement (ROI)
+## ⚖️ Philosophie & ROI
 
-* **Souveraineté des Données :** L'intégralité du savoir est stockée en local, synchronisée uniquement par choix.
-* **Efficacité Temporelle :** Réduction du "bruit" et de la distraction en isolant le processus de production.
-* **Professionnalisme Accru :** Production de livrables dont la qualité formelle égale celle des grandes maisons d'édition.
+* **Souveraineté des Données** : L'intégralité du savoir est stockée en local.
+* **Efficacité Temporelle** : Réduction du "bruit" numérique en isolant le processus de production.
+* **Professionnalisme Accru** : Livrables de qualité "maison d'édition".
 
------
+---
 
-## 📊 Roadmap du MVP
-
-* [x] Définition des standards d'édition (syntaxe **M-Spec**).
-* [ ] **Phase 1 :** Finalisation de l'orchestrateur multi-OS (Go-Task).
-* [ ] **Phase 2 :** Déploiement automatisé sur la couche Edge (Cloudflare).
-* [ ] **Phase 3 :** Client natif haute performance (Tauri/Rust).
-
------
-
-**Mainteneur Principal** : [Nguetsa Lorein Du Perron](https://github.com/lorein-duperron)
-
-**Organisation** : [M-CORE Engineering](https://github.com/M-Core-Engineering)
-
-**Licence** : [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) — *Garantissant la liberté d'usage et la protection des contributions.*
-
-> *"Passer de l'artisanat à la rigueur : La donnée devient un actif, le mobile devient une usine."*
+**Mainteneur Principal** : Nguetsa Lorein Du Perron
+**Organisation** : M-CORE Engineering
+**Licence** : Apache License 2.0
